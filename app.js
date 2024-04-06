@@ -14,10 +14,6 @@ const log = (message, level) => {
   }
 }
 
-log('test verbose', 'verbose')
-log('test info', 'info')
-log('test error', 'error')
-
 log('Initialising...', 'info')
 // Create video variable for assignment later
 let video
