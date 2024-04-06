@@ -1,23 +1,28 @@
-/*
-let volumeChangeListenerElement = document.querySelector('.html5-main-video');
-volumeChangeListenerElement.onvolumechange = (e) => {
-    console.log(e);
-};
-*/
+const log = (message, level) => {
+  switch (level) {
+    case 'verbose':
+      console.debug('%c[YSV] ' + `%c${message}`, 'color: red', 'color: white')
+      break
+    case 'info':
+      console.info('%c[YSV] ' + `%c${message}`, 'color: red', 'color: white')
+      break
+    case 'error':
+      console.error('%c[YSV] ' + `%c${message}`, 'color: red', 'color: white')
+      break
+    default:
+      break
+  }
+}
 
-// document.addEventListener('yt-navigate-finish', () => {
-//   console.log('yt navigate')
-// })
+log('test verbose', 'verbose')
+log('test info', 'info')
+log('test error', 'error')
 
-// document.addEventListener('readystatechange', () => {
-//   console.log('player is ready')
-// })
+log('Initialising...', 'info')
+// Create video variable for assignment later
+let video
 
-// document.addEventListener('yt-player-updated', () => {
-// })
-
-let video = document.querySelector('.html5-video-player')
-
+// Create tooltip element and append it to the body
 let tooltip = document.createElement('canvas')
 tooltip.setAttribute('id', 'volume-tooltip')
 tooltip.setAttribute('class', 'tooltip-invisible')
@@ -28,10 +33,13 @@ ctx.font = '40px Roboto'
 ctx.shadowColor = 'black'
 ctx.shadowBlur = 7
 ctx.fillStyle = 'white'
-ctx.fillText(video.getVolume(), 10, 50)
+// ctx.fillText(video.getVolume(), 10, 50)
+
 document.body.appendChild(tooltip)
 
+// Append tooltip css to the body
 let css = document.createElement('style')
+
 css.innerHTML = `
           .tooltip-visible {
               opacity: 1 !important;
@@ -47,36 +55,65 @@ css.innerHTML = `
               z-index: 2147483647;
               position: fixed;
               pointer-events: none;
-          }
-          `
+          }`
+
 document.head.appendChild(css)
 
+// Create variable for tooltip fadeout timer
 let fadeOutTimer
 
-let listener = addEventListener(
-  'wheel',
-  async (e) => {
-    //console.log(e);
-    if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
-      e.preventDefault()
-      let currentVolume = video.getVolume()
-      if (e.deltaY > 0) {
-        await video.setVolume(currentVolume - 5)
-      } else {
-        await video.setVolume(currentVolume + 5)
-      }
-      ctx.clearRect(0, 0, tooltip.width, tooltip.height)
-      ctx.fillText(video.getVolume(), 10, 50)
-      if (tooltip.classList.contains('tooltip-invisible')) {
-        tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
-      }
-      tooltip.setAttribute('class', 'tooltip-visible')
+// Create variable for listener
+let listener
 
-      clearTimeout(fadeOutTimer)
-      fadeOutTimer = setTimeout(() => {
-        tooltip.setAttribute('class', `tooltip-invisible`)
-      }, 500)
+const attachScrollSystem = () => {
+  // Assign video element to video variable
+  video = document.querySelector('.html5-video-player')
+
+  // Attach scroll listener to the window
+  listener = addEventListener(
+    'wheel',
+    async (e) => {
+      //console.log(e);
+      if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
+        e.preventDefault()
+        let currentVolume = video.getVolume()
+        if (e.deltaY > 0) {
+          await video.setVolume(currentVolume - 5)
+        } else {
+          await video.setVolume(currentVolume + 5)
+        }
+        ctx.clearRect(0, 0, tooltip.width, tooltip.height)
+        ctx.fillText(video.getVolume(), 10, 50)
+        if (tooltip.classList.contains('tooltip-invisible')) {
+          tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
+        }
+        tooltip.setAttribute('class', 'tooltip-visible')
+
+        log(`New volume: ${video.getVolume()}`, 'verbose')
+
+        clearTimeout(fadeOutTimer)
+        fadeOutTimer = setTimeout(() => {
+          tooltip.setAttribute('class', `tooltip-invisible`)
+        }, 500)
+      }
+    },
+    { passive: false }
+  )
+}
+
+const navigateListenerAbortController = new AbortController()
+
+addEventListener(
+  'yt-navigate-finish',
+  (e) => {
+    log('Navigation...', 'verbose')
+    if (e.detail.pageType === 'watch') {
+      log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
+      attachScrollSystem()
+      navigateListenerAbortController.abort()
+    } else {
+      log('This is not a watch page.', 'info')
     }
   },
-  { passive: false }
+  { signal: navigateListenerAbortController.signal }
 )
