@@ -97,19 +97,23 @@ const attachScrollSystem = () => {
   )
 }
 
-const navigateListenerAbortController = new AbortController()
+if (location.pathname.startsWith('/watch')) {
+  attachScrollSystem()
+} else {
+  const navigateListenerAbortController = new AbortController()
 
-addEventListener(
-  'yt-navigate-finish',
-  (e) => {
-    log('Navigation...', 'verbose')
-    if (e.detail.pageType === 'watch') {
-      log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
-      attachScrollSystem()
-      navigateListenerAbortController.abort()
-    } else {
-      log('This is not a watch page.', 'info')
-    }
-  },
-  { signal: navigateListenerAbortController.signal }
-)
+  addEventListener(
+    'yt-navigate-finish',
+    (e) => {
+      log('Navigation...', 'verbose')
+      if (e.detail.pageType === 'watch') {
+        log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
+        attachScrollSystem()
+        navigateListenerAbortController.abort()
+      } else {
+        log('This is not a watch page.', 'info')
+      }
+    },
+    { signal: navigateListenerAbortController.signal }
+  )
+}
