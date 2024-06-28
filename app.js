@@ -1,3 +1,5 @@
+//TODO: add live catchup keyboard shortcut... Preferably Shift + L, which seems hard cus the player (document.querySelector("#movie_player.html5-video-player")) catches L keypresses before they go to the event listener.
+
 const log = (message, level) => {
   switch (level) {
     case 'verbose':
