@@ -16,6 +16,8 @@ const log = (message, level) => {
     }
 }
 
+const volumeStepSize = 5
+
 log('Initialising...', 'info')
 // Create video variable for assignment later
 let video
@@ -76,9 +78,9 @@ const attachScrollSystem = () => {
                 e.preventDefault()
                 const currentVolume = video.getVolume()
                 if (e.deltaY > 0) {
-                    await video.setVolume(currentVolume - 5)
+                    await video.setVolume(currentVolume - volumeStepSize)
                 } else {
-                    await video.setVolume(currentVolume + 5)
+                    await video.setVolume(currentVolume + volumeStepSize)
                 }
                 ctx.clearRect(0, 0, tooltip.width, tooltip.height)
                 ctx.fillText(video.getVolume(), 10, 50)
