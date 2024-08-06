@@ -1,5 +1,11 @@
 //TODO: add live catchup keyboard shortcut... Preferably Shift + L, which seems hard cus the player (document.querySelector("#movie_player.html5-video-player")) catches L keypresses before they go to the event listener.
 
+if (window.trustedTypes?.createPolicy) {
+    window.trustedTypes.createPolicy('default', {
+        createHTML: (string, sink) => string,
+    })
+}
+
 const log = (message, level) => {
     switch (level) {
         case 'verbose':
@@ -40,7 +46,7 @@ document.body.appendChild(tooltip)
 // Append tooltip css to the body
 const css = document.createElement('style')
 
-css.innerHTML = `
+css.innerHTML = window.trustedTypes.defaultPolicy.createHTML(`
           .tooltip-visible {
               opacity: 1 !important;
           }
@@ -55,7 +61,7 @@ css.innerHTML = `
               z-index: 2147483647;
               position: fixed;
               pointer-events: none;
-          }`
+          }`)
 
 document.head.appendChild(css)
 
