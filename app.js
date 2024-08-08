@@ -89,9 +89,9 @@ const attachScrollSystem = () => {
                 e.preventDefault()
                 const currentVolume = video.getVolume()
                 if (e.deltaY > 0) {
-                    await video.setVolume(currentVolume - volumeStepSize)
+                    await video.setVolume(currentVolume - YSV_scrollVolumeStepSize)
                 } else {
-                    await video.setVolume(currentVolume + volumeStepSize)
+                    await video.setVolume(currentVolume + YSV_scrollVolumeStepSize)
                 }
                 ctx.clearRect(0, 0, tooltip.width, tooltip.height)
                 ctx.fillText(video.getVolume(), 10, 50)
