@@ -15,9 +15,9 @@
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],
-            "js": ["app.js"],
+            "js": ["applauncher.js"],
             "run_at": "document_idle",
-            "world": "MAIN"
+            "world": "ISOLATED"
         }
     ]
 }

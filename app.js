@@ -26,7 +26,8 @@ YSV_scrollVolumeStepSize = 5
 
 window.addEventListener('YSVSettingsChanged', (e) => {
     console.log(e)
-    YSV_scrollVolumeStepSize = e.detail.volumeStep
+    console.log(`setting step size to ${e.detail.stepSize}`)
+    YSV_scrollVolumeStepSize = e.detail.stepSize
 })
 
 log('Initialising...', 'info')
