@@ -4,6 +4,14 @@
     "description": "Lets you change the volume of a Youtube video by scrolling on the player.",
     "version": "0.1.0",
     "manifest_version": 3,
+    "permissions": ["storage", "tabs", "scripting"],
+    "host_permissions": ["*://*.youtube.com/*"],
+    "background": {
+        "service_worker": "service-worker.js"
+    },
+    "action": {
+        "default_popup": "popup/popup.html"
+    },
     "content_scripts": [
         {
             "matches": ["*://*.youtube.com/*"],

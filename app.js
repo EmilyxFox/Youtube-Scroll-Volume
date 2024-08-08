@@ -22,7 +22,12 @@ const log = (message, level) => {
     }
 }
 
-const volumeStepSize = 5
+YSV_scrollVolumeStepSize = 5
+
+window.addEventListener('YSVSettingsChanged', (e) => {
+    console.log(e)
+    YSV_scrollVolumeStepSize = e.detail.volumeStep
+})
 
 log('Initialising...', 'info')
 // Create video variable for assignment later
