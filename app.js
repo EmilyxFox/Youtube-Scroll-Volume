@@ -9,13 +9,13 @@ if (window.trustedTypes?.createPolicy) {
 const log = (message, level) => {
     switch (level) {
         case 'verbose':
-            console.debug(`%c[YSV]·%c${message}`, 'color:·red', 'color:·white')
+            console.debug(`%c[YSV] %c${message}`, 'color: red', 'color: white')
             break
         case 'info':
-            console.info(`%c[YSV]·%c${message}`, 'color:·red', 'color:·white')
+            console.info(`%c[YSV] %c${message}`, 'color: red', 'color: white')
             break
         case 'error':
-            console.error(`%c[YSV]·%c${message}`, 'color:·red', 'color:·white')
+            console.error(`%c[YSV] %c${message}`, 'color: red', 'color: white')
             break
         default:
             break
