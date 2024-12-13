@@ -25,10 +25,8 @@ const log = (message, level) => {
 const volumeStepSize = 5
 
 log('Initialising...', 'info')
-// Create video variable for assignment later
 let video
 
-// Create tooltip element and append it to the body
 const tooltip = document.createElement('canvas')
 tooltip.setAttribute('id', 'volume-tooltip')
 tooltip.setAttribute('class', 'tooltip-invisible')
@@ -39,11 +37,9 @@ ctx.font = '40px Roboto'
 ctx.shadowColor = 'black'
 ctx.shadowBlur = 7
 ctx.fillStyle = 'white'
-// ctx.fillText(video.getVolume(), 10, 50)
 
 document.body.appendChild(tooltip)
 
-// Append tooltip css to the body
 const css = document.createElement('style')
 
 css.innerHTML = window.trustedTypes.defaultPolicy.createHTML(`
@@ -65,21 +61,16 @@ css.innerHTML = window.trustedTypes.defaultPolicy.createHTML(`
 
 document.head.appendChild(css)
 
-// Create variable for tooltip fadeout timer
 let fadeOutTimer
 
-// Create variable for listener
 let listener
 
 const attachScrollSystem = () => {
-    // Assign video element to video variable
     video = document.querySelector('.html5-video-player')
 
-    // Attach scroll listener to the window
     listener = addEventListener(
         'wheel',
         async (e) => {
-            //console.log(e);
             if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
                 e.preventDefault()
                 const currentVolume = video.getVolume()
