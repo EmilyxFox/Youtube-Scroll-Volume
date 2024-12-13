@@ -72,26 +72,28 @@ const attachScrollSystem = () => {
         'wheel',
         async (e) => {
             if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
-                e.preventDefault()
-                const currentVolume = video.getVolume()
-                if (e.deltaY > 0) {
-                    await video.setVolume(currentVolume - volumeStepSize)
-                } else {
-                    await video.setVolume(currentVolume + volumeStepSize)
-                }
-                ctx.clearRect(0, 0, tooltip.width, tooltip.height)
-                ctx.fillText(video.getVolume(), 10, 50)
-                if (tooltip.classList.contains('tooltip-invisible')) {
-                    tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
-                }
-                tooltip.setAttribute('class', 'tooltip-visible')
+                if (location.pathname.startsWith('/watch')) {
+                    e.preventDefault()
+                    const currentVolume = video.getVolume()
+                    if (e.deltaY > 0) {
+                        await video.setVolume(currentVolume - volumeStepSize)
+                    } else {
+                        await video.setVolume(currentVolume + volumeStepSize)
+                    }
+                    ctx.clearRect(0, 0, tooltip.width, tooltip.height)
+                    ctx.fillText(video.getVolume(), 10, 50)
+                    if (tooltip.classList.contains('tooltip-invisible')) {
+                        tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
+                    }
+                    tooltip.setAttribute('class', 'tooltip-visible')
 
-                log(`New volume: ${video.getVolume()}`, 'verbose')
+                    log(`New volume: ${video.getVolume()}`, 'verbose')
 
-                clearTimeout(fadeOutTimer)
-                fadeOutTimer = setTimeout(() => {
-                    tooltip.setAttribute('class', 'tooltip-invisible')
-                }, 500)
+                    clearTimeout(fadeOutTimer)
+                    fadeOutTimer = setTimeout(() => {
+                        tooltip.setAttribute('class', 'tooltip-invisible')
+                    }, 500)
+                }
             }
         },
         { passive: false },
