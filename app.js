@@ -106,7 +106,7 @@ const showVolume = (e) => {
 	}, 500)
 }
 
-if (location.pathname.startsWith('/watch')) {
+if (location.pathname.startsWith('/watch') || location.pathname.startsWith('/live')) {
 	attachScrollSystem()
 } else {
 	const navigateListenerAbortController = new AbortController()
@@ -115,6 +115,7 @@ if (location.pathname.startsWith('/watch')) {
 		'yt-navigate-finish',
 		(e) => {
 			log('Navigation...', 'verbose')
+			log(`Page type: ${e.detail.pageType}`, 'verbose')
 			if (e.detail.pageType === 'watch') {
 				log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
 				attachScrollSystem()
