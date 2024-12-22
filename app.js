@@ -1,25 +1,25 @@
 //TODO: add live catchup keyboard shortcut... Preferably Shift + L, which seems hard cus the player (document.querySelector("#movie_player.html5-video-player")) catches L keypresses before they go to the event listener.
 
 if (window.trustedTypes?.createPolicy) {
-    window.trustedTypes.createPolicy('default', {
-        createHTML: (string, sink) => string,
-    })
+	window.trustedTypes.createPolicy('default', {
+		createHTML: (string, sink) => string,
+	})
 }
 
 const log = (message, level) => {
-    switch (level) {
-        case 'verbose':
-            console.debug(`%c[YSV] %c${message}`, 'color: red', 'color: white')
-            break
-        case 'info':
-            console.info(`%c[YSV] %c${message}`, 'color: red', 'color: white')
-            break
-        case 'error':
-            console.error(`%c[YSV] %c${message}`, 'color: red', 'color: white')
-            break
-        default:
-            break
-    }
+	switch (level) {
+		case 'verbose':
+			console.debug(`%c[YSV] %c${message}`, 'color: red', 'color: white')
+			break
+		case 'info':
+			console.info(`%c[YSV] %c${message}`, 'color: red', 'color: white')
+			break
+		case 'error':
+			console.error(`%c[YSV] %c${message}`, 'color: red', 'color: white')
+			break
+		default:
+			break
+	}
 }
 
 const volumeStepSize = 5
@@ -66,57 +66,63 @@ let fadeOutTimer
 let listener
 
 const attachScrollSystem = () => {
-    video = document.querySelector('.html5-video-player')
+	video = document.querySelector('.html5-video-player')
 
-    listener = addEventListener(
-        'wheel',
-        async (e) => {
-            if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
-                if (location.pathname.startsWith('/watch')) {
-                    e.preventDefault()
-                    const currentVolume = video.getVolume()
-                    if (e.deltaY > 0) {
-                        await video.setVolume(currentVolume - volumeStepSize)
-                    } else {
-                        await video.setVolume(currentVolume + volumeStepSize)
-                    }
-                    ctx.clearRect(0, 0, tooltip.width, tooltip.height)
-                    ctx.fillText(video.getVolume(), 10, 50)
-                    if (tooltip.classList.contains('tooltip-invisible')) {
-                        tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
-                    }
-                    tooltip.setAttribute('class', 'tooltip-visible')
+	listener = addEventListener(
+		'wheel',
+		async (e) => {
+			if (e.target.classList.contains('html5-main-video') || e.target.id === 'volume-tooltip') {
+				if (location.pathname.startsWith('/watch') || location.pathname.startsWith('/live')) {
+					e.preventDefault()
+					const currentVolume = video.getVolume()
+					if (e.deltaY > 0) {
+						await video.setVolume(currentVolume - volumeStepSize)
+					} else {
+						await video.setVolume(currentVolume + volumeStepSize)
+					}
 
-                    log(`New volume: ${video.getVolume()}`, 'verbose')
+					showVolume(e)
 
-                    clearTimeout(fadeOutTimer)
-                    fadeOutTimer = setTimeout(() => {
-                        tooltip.setAttribute('class', 'tooltip-invisible')
-                    }, 500)
-                }
-            }
-        },
-        { passive: false },
-    )
+					log(`New volume: ${video.getVolume()}`, 'verbose')
+				}
+			}
+		},
+		{ passive: false },
+	)
+}
+
+const showVolume = (e) => {
+	ctx.clearRect(0, 0, tooltip.width, tooltip.height)
+	ctx.fillText(video.getVolume(), 10, 50)
+	if (tooltip.classList.contains('tooltip-invisible')) {
+		tooltip.setAttribute('style', `left: ${e.x - 20}px; top: ${e.y - 55}px;`)
+	}
+
+	tooltip.setAttribute('class', 'tooltip-visible')
+
+	clearTimeout(fadeOutTimer)
+	fadeOutTimer = setTimeout(() => {
+		tooltip.setAttribute('class', 'tooltip-invisible')
+	}, 500)
 }
 
 if (location.pathname.startsWith('/watch')) {
-    attachScrollSystem()
+	attachScrollSystem()
 } else {
-    const navigateListenerAbortController = new AbortController()
+	const navigateListenerAbortController = new AbortController()
 
-    addEventListener(
-        'yt-navigate-finish',
-        (e) => {
-            log('Navigation...', 'verbose')
-            if (e.detail.pageType === 'watch') {
-                log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
-                attachScrollSystem()
-                navigateListenerAbortController.abort()
-            } else {
-                log('This is not a watch page.', 'info')
-            }
-        },
-        { signal: navigateListenerAbortController.signal },
-    )
+	addEventListener(
+		'yt-navigate-finish',
+		(e) => {
+			log('Navigation...', 'verbose')
+			if (e.detail.pageType === 'watch') {
+				log('Watch page found! Attaching scroll listener and aborting navigate listener.', 'info')
+				attachScrollSystem()
+				navigateListenerAbortController.abort()
+			} else {
+				log('This is not a watch page.', 'info')
+			}
+		},
+		{ signal: navigateListenerAbortController.signal },
+	)
 }
