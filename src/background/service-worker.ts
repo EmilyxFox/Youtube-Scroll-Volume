@@ -86,7 +86,7 @@ const injectScript = (tabId: number, stepSize: number) => {
       }
       const _cssInHead = document.head.appendChild(css)
 
-      let fadeTimeout: number | undefined
+      let fadeTimeout: NodeJS.Timeout | undefined
 
       const attachScrollSystem = () => {
         let video = document.querySelector('.html5-video-player') as YouTubeVideoPlayer | null
