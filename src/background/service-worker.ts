@@ -10,6 +10,10 @@ const isVideoPage = (url: URL): boolean => {
     return url.pathname.startsWith('/watch') || url.pathname.startsWith('/live')
 }
 
+chrome.runtime.onInstalled.addListener(details => {
+    if (details.reason === 'install') chrome.storage.sync.set({ stepSize: 5 })
+})
+
 chrome.storage.onChanged.addListener(async changes => {
     if (!changes.stepSize) return
     const tabs = await chrome.tabs.query({ url: '*://*.youtube.com/*' })
