@@ -35,3 +35,11 @@ Click the load unpacked button and select the `dist` directory.
 ![A gif of the "Load unpacked" button being pressed.](docs/loadUnpackedButton.gif)
 
 ### 6. Reload any open Youtube pages.
+
+## Usage
+
+You can now change the volume of any normal (non-short) youtube video by scrolling on the player.
+
+You can change the volume step size for each scroll by clicking on the extension icon.
+
+Your step value is stored in Chrome Synced Storage.
