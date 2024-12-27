@@ -100,7 +100,7 @@ const injectScript = (tabId: number, stepSize: number) => {
                     async e => {
                         const target = e.target as HTMLElement
                         if (!target || !(target.classList.contains('html5-main-video') || target.id === 'volume-tooltip'))
-                            return console.debug('not scroll on video or volume tooltip', 'verbose')
+                            return console.debug('not scroll on video or volume tooltip')
 
                         e.preventDefault()
 
