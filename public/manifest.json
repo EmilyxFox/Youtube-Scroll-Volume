@@ -12,19 +12,10 @@
     },
     "content_scripts": [
         {
-            "matches": [
-                "*://*.youtube.com/*"
-            ],
-            "js": [
-                "content/content-script.js"
-            ]
+            "matches": ["*://*.youtube.com/*"],
+            "js": ["content/content-script.js"]
         }
     ],
-    "permissions": [
-        "storage",
-        "scripting"
-    ],
-    "host_permissions": [
-        "*://*.youtube.com/*"
-    ]
+    "permissions": ["storage", "scripting"],
+    "host_permissions": ["*://*.youtube.com/*"]
 }
