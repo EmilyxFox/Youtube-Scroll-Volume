@@ -1,4 +1,10 @@
-import type { YouTubeVideoPlayer } from '../types/types'
+import type { stepSizeChangeEvent, YouTubeVideoPlayer } from '../types/types'
+
+declare global {
+  interface WindowEventMap {
+    stepSizeChange: stepSizeChangeEvent
+  }
+}
 
 const isVideoPage = (url: URL): boolean => {
   return url.pathname.startsWith('/watch') || url.pathname.startsWith('/live')
@@ -33,11 +39,11 @@ const injectScript = (tabId: number, stepSize: number) => {
     func: stepSize => {
       if (window.trustedTypes?.createPolicy) {
         window.trustedTypes.createPolicy('default', {
-          createHTML: (string: string, sink: unknown) => string,
+          createHTML: (string: string, _sink: unknown) => string,
         })
       }
 
-      window.addEventListener('stepSizeChange', (e: CustomEvent<number>) => {
+      window.addEventListener('stepSizeChange', e => {
         stepSize = e.detail
       })
 
