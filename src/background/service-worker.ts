@@ -13,7 +13,6 @@ chrome.storage.onChanged.addListener(async changes => {
 })
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  console.log('pee')
   if (!tab.url) return
   const url = new URL(tab.url)
 
@@ -27,7 +26,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 })
 const injectScript = (tabId: number, stepSize: number) => {
-  console.log('injecting script')
   chrome.scripting.executeScript({
     target: { tabId: tabId },
     world: 'MAIN',
