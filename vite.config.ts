@@ -7,9 +7,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        popup: resolve(__dirname, 'index.html'),
-        background: resolve(__dirname, 'src/background/service-worker.ts'),
-        content: resolve(__dirname, 'src/content/content-script.ts'),
+        popup: resolve('index.html'),
+        background: resolve('src/background/service-worker.ts'),
+        content: resolve('src/content/content-script.ts'),
       },
       output: {
         entryFileNames: chunkInfo => {
