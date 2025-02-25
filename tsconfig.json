@@ -14,10 +14,10 @@
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
-        "$lib": ["./src/lib"],
-        "$lib/*": ["./src/lib/*"]
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.svelte"],
-  "references": [{ "path": "./tsconfig.node.json" }],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

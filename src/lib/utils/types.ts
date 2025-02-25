@@ -1,10 +1,10 @@
 export interface YouTubeVideoPlayer extends HTMLElement {
-    getVolume: () => number;
-    setVolume: (volume: number) => Promise<void>;
+  getVolume: () => number;
+  setVolume: (volume: number) => Promise<void>;
 }
 
 export interface stepSizeChangeEvent extends Event {
-    detail: number;
+  detail: number;
 }
 
 export interface stepSizeRequestEvent extends Event {}

@@ -1,24 +1,24 @@
 name: Prettier Formatting
 
 on:
-    pull_request:
-    push:
-        branches:
-            - main
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
-    prettier:
-        runs-on: ubuntu-latest
+  prettier:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v3
-              with:
-                  ref: ${{ github.head_ref }}
-            - name: npm install
-              run: npm install -D prettier prettier-plugin-tailwindcss
-            - name: Prettify code
-              uses: creyD/prettier_action@v4.3
-              with:
-                  dry: true
-                  prettier_plugins: 'prettier-plugin-tailwindcss'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+      - name: npm install
+        run: npm install -D prettier prettier-plugin-tailwindcss
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.3
+        with:
+          dry: true
+          prettier_plugins: 'prettier-plugin-tailwindcss'
