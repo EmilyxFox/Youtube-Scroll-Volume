@@ -1,35 +1,34 @@
-import { defineConfig } from 'vite'
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-import { resolve } from 'node:path'
+import { defineConfig } from 'vite';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import webExtension, { readJsonFile } from 'vite-plugin-web-extension';
+import { resolve } from 'node:path';
 
-// https://vite.dev/config/
+function generateManifest() {
+    const manifest = readJsonFile('src/manifest.json');
+    const pkg = readJsonFile('package.json');
+    return {
+        name: pkg.name,
+        description: pkg.description,
+        version: pkg.version,
+        ...manifest,
+    };
+}
+
+// https://vitejs.dev/config/
 export default defineConfig({
-    build: {
-        rollupOptions: {
-            input: {
-                popup: resolve('index.html'),
-                background: resolve('src/background/service-worker.ts'),
-                content: resolve('src/content/content-script.ts'),
-            },
-            output: {
-                entryFileNames: chunkInfo => {
-                    switch (chunkInfo.name) {
-                        case 'background': {
-                            return 'background/service-worker.js'
-                        }
-                        case 'popup': {
-                            return 'popup/[name].[hash].js'
-                        }
-                        case 'content': {
-                            return 'content/content-script.js'
-                        }
-                        default:
-                            break
-                    }
-                    return '[name].[hash].[ext]'
-                },
-            },
+    plugins: [
+        svelte(),
+        webExtension({
+            manifest: generateManifest,
+            watchFilePaths: ['package.json', 'manifest.json'],
+            browser: process.env.TARGET ?? 'chrome',
+            additionalInputs: ['src/inject.ts'],
+        }),
+    ],
+    resolve: {
+        alias: {
+            $lib: resolve('./src/lib/'),
+            '$lib/*': resolve('./src/lib/*'),
         },
     },
-    plugins: [svelte()],
-})
+});

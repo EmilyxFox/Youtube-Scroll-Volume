@@ -1,11 +1,3 @@
 <script lang="ts">
-  import StepSize from './lib/StepSize.svelte'
+	import '$lib/tailwind.css';
 </script>
-
-<main class="w-[400px] flex flex-col content-center text-center first:pt-4">
-  <h1 class="text-3xl">YT Scroll Volume</h1>
-  <StepSize />
-</main>
-
-<style>
-</style>
